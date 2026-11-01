@@ -59,7 +59,7 @@ curl -fsSL https://github.com/sunshineabcd/purecanvas-cli/raw/v1.2.0/purecanvas-
 
 ```bash
 shasum -a 256 purecanvas-cli-1.2.0.zip
-# 5114ea077f2753875929a2a96a5fb7940b8353a16537cce7aaf361f9fc6a9024
+# 4b2adb264b78f426bbc5437278aa7d2d6502a21bd0b1dbe2e8f624ccc36585f4
 ```
 
 ## 说明
