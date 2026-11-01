@@ -1,24 +1,43 @@
-# purecanvas CLI
+# purecanvas CLI (v1.2.0)
 
 PureCanvas 的独立命令行工具（**仅二进制发布，仓库不含应用源码**）：
 
-模拟器采集（截图 / 录屏 / 流程驱动 UI 导航）→ 设备外壳 → 多语言成图 → 商店规格校验 → App Preview 视频拼接。
+SwiftUI 全工程免模拟器代码快拍（`preview-shot`） / 模拟器采集（截图 / 录屏 / 流程驱动 UI 导航）→ 设备外壳 → 多语言成图 → 商店规格校验 → App Preview 视频拼接。
 
-与 PureCanvas App 内嵌 MCP 的采集桥（`capture_*` 工具）配套使用。
+与 PureCanvas App 内嵌 MCP 的采集桥（`capture_*` / `preview_shot` 工具）配套使用。
 
 ## 下载安装
 
-1. 到 [Releases](../../releases/latest) 下载 `purecanvas-cli-*.zip`
-2. 解压即用（包含 `purecanvas` 与 `FlowRunner/` 采集子工程）
-3. 发布包已做 **Developer ID 签名 + Apple 公证**，Gatekeeper 直接放行，无需额外操作
+### 方式一：Homebrew（推荐）
 
-**要求**：macOS 14+ 与完整 Xcode（流程驱动采集需要 `xcodebuild`）。
+```bash
+brew tap sunshineabcd/tap
+brew install purecanvas
+```
+
+### 方式二：直装（免 Homebrew）
+
+```bash
+curl -fsSL https://github.com/sunshineabcd/purecanvas-cli/raw/v1.2.0/purecanvas-cli-1.2.0.zip -o /tmp/purecanvas-cli.zip && mkdir -p ~/.local ~/.local/bin && ditto -x -k /tmp/purecanvas-cli.zip ~/.local && ln -sf ~/.local/purecanvas-cli-1.2.0/purecanvas ~/.local/bin/purecanvas
+```
+
+**要求**：macOS 14+ 与完整 Xcode（原生编译快拍 `preview-shot` 与流程驱动采集需要 `xcrun` / `xcodebuild`）。
 
 ## 快速开始
 
 ```bash
 ./purecanvas --version
 ./purecanvas help
+
+# 免模拟器 SwiftUI 全工程多语言 × 全设备快拍（支持 iphone / iphone-duo / ipad / mac / watch）
+./purecanvas preview-shot \
+  --views /path/to/YourSwiftUIProject \
+  [--mock-data /path/to/mock.json] \
+  --device iphone,iphone-duo,ipad,mac,watch \
+  --lang zh-Hans,en,ja \
+  --out ./shots
+
+# 模拟器采集与自动化排版
 ./purecanvas capture doctor                                   # 环境体检
 ./purecanvas capture describe --bundle-id com.example.app     # 查看实时 UI 层级
 ./purecanvas capture run --engine flow --flow Flows/demo.json --new-project
@@ -34,14 +53,13 @@ PureCanvas 的独立命令行工具（**仅二进制发布，仓库不含应用�
 ```
 
 启动后 PureCanvas App 的 AI 面板会显示「采集后端运行中」；AI 客户端可通过 MCP 的
-`capture_status / capture_describe / capture_ui / capture_run / capture_job` 驱动采集。
+`preview_shot / capture_status / capture_describe / capture_ui / capture_run / capture_job` 驱动快拍与采集。
 
 ## 校验下载包
 
 ```bash
-shasum -a 256 purecanvas-cli-1.1.0.zip
-# 5bbda1e96e48b35d699f5870d4493de8c2700d0dd1e7d1770b06e7c50bdebcc7
-codesign --verify --strict purecanvas-cli-1.1.0/purecanvas   # 应通过
+shasum -a 256 purecanvas-cli-1.2.0.zip
+# 5114ea077f2753875929a2a96a5fb7940b8353a16537cce7aaf361f9fc6a9024
 ```
 
 ## 说明
